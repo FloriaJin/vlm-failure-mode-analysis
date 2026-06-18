@@ -1,1 +1,5 @@
 category,cases,accuracy,errors,error_rate
+chart_reading,4,0.75,1,0.25
+object_absence,4,0.75,1,0.25
+ocr_conflict,4,1.0,0,0.0
+spatial_relation,4,1.0,0,0.0

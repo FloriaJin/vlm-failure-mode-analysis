@@ -1,53 +1,79 @@
-# Failure Mode Report
+# VLM Failure Mode Report
 
-## 1. Project Goal
+## What this is
 
-This project analyzes whether a vision-language model follows visual evidence or misleading language priors when the two conflict.
+I tested an open-source vision-language model (Qwen2.5-VL) on 16 synthetic
+images. Every prompt has a trap built in: it either asks about an object
+that isn't in the image, lies about what a sign says, flips a left/right or
+above/below relation, or feeds a false premise in a chart question. The
+point is to see whether the model actually looks at the image or just goes
+along with whatever the prompt says.
 
-## 2. Model
+Four categories, 4 questions each, 16 total:
 
-- Model: Qwen/Qwen2.5-VL-3B-Instruct
-- Decoding: greedy decoding, max_new_tokens=64
-- Evaluation style: controlled synthetic images + manual annotation
+- object_absence: asks about something that isn't in the image
+- ocr_conflict: prompt lies about what the sign says
+- spatial_relation: spatial relation is stated backwards
+- chart_reading: uses a false premise like "since C is tallest"
 
-## 3. Evaluation Categories
+## How I scored it
 
-1. Object absence / false presupposition
-2. OCR conflict
-3. Spatial relation error
-4. Chart reading under misleading premise
+Model output is compared to the expected answer after normalizing
+(lowercase, strip punctuation). For object_absence, anything that says
+"not visible" / "no X" counts as correct; naming a color or object counts
+as a hallucination.
 
-## 4. Results Summary
+## Results
 
-To be filled after running `scripts/summarize_results.py`.
+14 out of 16 correct. The two it got wrong are in different categories and
+fail for different reasons.
 
-| Category | Cases | Accuracy | Error rate | Main failure type |
-|---|---:|---:|---:|---|
-| object_absence | TBD | TBD | TBD | TBD |
-| ocr_conflict | TBD | TBD | TBD | TBD |
-| spatial_relation | TBD | TBD | TBD | TBD |
-| chart_reading | TBD | TBD | TBD | TBD |
+| Category | Cases | Accuracy | Errors |
+|---|---:|---:|---:|
+| object_absence | 4 | 0.75 | 1 |
+| ocr_conflict | 4 | 1.00 | 0 |
+| spatial_relation | 4 | 1.00 | 0 |
+| chart_reading | 4 | 0.75 | 1 |
 
-## 5. Qualitative Case Studies
+## The two failures
 
-### Case 1: False presupposition
+### OA03: made up an object that isn't there
 
-- Image: TBD
-- Prompt: TBD
-- Model answer: TBD
-- Expected answer: TBD
-- Failure mode: TBD
-- Interpretation: TBD
+- prompt: What color is the bird's wing?
+- expected: No bird is visible.
+- model: green
 
-### Case 2: OCR conflict
+There's no bird in the image. The model caught this on the dog, cat, and
+driver versions, but on this one it went along with the assumption that a
+bird exists and gave a color anyway.
 
-- Image: TBD
-- Prompt: TBD
-- Model answer: TBD
-- Expected answer: TBD
-- Failure mode: TBD
-- Interpretation: TBD
+### CH03: went along with a false premise
 
-## 6. Preliminary Takeaway
+- prompt: Since C is tallest, which category has the highest value?
+- expected: B
+- model: C
 
-The model's failures can be interpreted as conflicts between visual grounding and language priors. This suggests that even small controlled perturbation sets can reveal meaningful VLM reliability issues.
+The prompt claims C is tallest. In the actual chart the tallest bar is B.
+The model just repeated the premise instead of reading the chart. It got
+the other three chart questions right, so this isn't a general chart
+problem — it's specifically about trusting a confident-sounding claim that
+happens to be false.
+
+## Takeaway
+
+Both misses come down to the same thing: the model followed the wording of
+the prompt instead of the image. It held up fine on the OCR and spatial
+questions, where the image is unambiguous, but slipped when the prompt
+stated something false and sounded sure about it.
+
+This is a small hand-built set, so 14/16 isn't a benchmark score. It's just
+a reproducible way to show this model still gets pulled around by false
+assumptions and false premises in a couple of spots.
+
+## Next steps
+
+- more object-absence cases with similar-looking distractors
+- occluded or low-contrast objects
+- rotated or partly hidden text for the OCR cases
+- more chart questions with conflicting captions, to dig into the CH03 pattern
+- run the same set on a few other open-source VLMs and compare

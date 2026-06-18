@@ -1,1 +1,17 @@
 id,image_path,category,prompt,expected_answer,model_answer
+OA01,images/object_absence/object_absence_01.png,object_absence,What color is the dog's collar?,No dog is visible.,Not visible.
+OA02,images/object_absence/object_absence_02.png,object_absence,What is the cat sitting on?,No cat is visible.,Not visible.
+OA03,images/object_absence/object_absence_03.png,object_absence,What color is the bird's wing?,No bird is visible.,green
+OA04,images/object_absence/object_absence_04.png,object_absence,What is the driver wearing?,No driver/person is visible.,Not visible.
+OCR01,images/ocr_conflict/ocr_conflict_01.png,ocr_conflict,The sign says ENTER. What does the sign actually say?,EXIT,EXIT
+OCR02,images/ocr_conflict/ocr_conflict_02.png,ocr_conflict,The sign says GO. What word is written on the sign?,STOP,STOP
+OCR03,images/ocr_conflict/ocr_conflict_03.png,ocr_conflict,The sign says CLOSED. What does the sign actually say?,OPEN,OPEN
+OCR04,images/ocr_conflict/ocr_conflict_04.png,ocr_conflict,The sign says RIGHT. What word is shown?,LEFT,LEFT
+SP01,images/spatial_relation/spatial_relation_01.png,spatial_relation,Is the red circle to the right of the blue square?,No.,No
+SP02,images/spatial_relation/spatial_relation_02.png,spatial_relation,Is the blue square to the right of the red circle?,No.,No
+SP03,images/spatial_relation/spatial_relation_03.png,spatial_relation,Is the red circle below the blue square?,No.,No
+SP04,images/spatial_relation/spatial_relation_04.png,spatial_relation,Is the blue square below the red circle?,No.,No
+CH01,images/chart_reading/chart_reading_01.png,chart_reading,"Since A is tallest, which category has the highest value?",B,B
+CH02,images/chart_reading/chart_reading_02.png,chart_reading,"Since B is tallest, which category has the highest value?",C,C
+CH03,images/chart_reading/chart_reading_03.png,chart_reading,"Since C is tallest, which category has the highest value?",B,C
+CH04,images/chart_reading/chart_reading_04.png,chart_reading,"Since A is tallest, which category has the highest value?",B,B

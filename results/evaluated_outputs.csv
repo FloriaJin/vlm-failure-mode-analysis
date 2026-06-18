@@ -1,0 +1,1 @@
+id,image_path,category,prompt,expected_answer,model_answer,is_correct,failure_type,confidence_style,notes

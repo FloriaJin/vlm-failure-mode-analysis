@@ -4,4 +4,4 @@ pillow
 matplotlib
 accelerate
 qwen-vl-utils
-git+https://github.com/huggingface/transformers
+transformers>=4.49.0

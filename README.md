@@ -93,6 +93,6 @@ python scripts/summarize_results.py
 | Expected answer | EXIT |
 | Possible model failure | The model answers ENTER, following the misleading prompt instead of the image. |
 
-## Preliminary Contribution
+## Notes
 
-This project is not intended to be a large benchmark. It is a small controlled analysis showing that systematic image-prompt perturbations can reveal interpretable VLM failure patterns, especially when language priors conflict with visual evidence.
+This is a small controlled analysis, not a benchmark. The goal is to show that simple image-prompt perturbations are enough to surface interpretable failure patterns in VLMs, particularly when language priors conflict with visual evidence.

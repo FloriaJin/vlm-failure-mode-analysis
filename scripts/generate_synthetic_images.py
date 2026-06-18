@@ -19,18 +19,21 @@ DATA_DIR = ROOT / "data"
 
 
 def _font(size: int = 44):
-    """Use PIL's default font to avoid system-specific font dependencies."""
     try:
         return ImageFont.truetype("DejaVuSans-Bold.ttf", size)
     except OSError:
-        return ImageFont.load_default()
+        return ImageFont.load_default(size=size)
 
 
 def save_ocr_image(text: str, path: Path) -> None:
     img = Image.new("RGB", (500, 260), "white")
     draw = ImageDraw.Draw(img)
     draw.rectangle([70, 70, 430, 190], outline="black", width=5)
-    draw.text((175, 110), text, fill="black", font=_font(44))
+    font = _font(44)
+    bbox = draw.textbbox((0, 0), text, font=font)
+    x = (500 - (bbox[2] - bbox[0])) // 2 - bbox[0]
+    y = (260 - (bbox[3] - bbox[1])) // 2 - bbox[1]
+    draw.text((x, y), text, fill="black", font=font)
     img.save(path)
 
 
